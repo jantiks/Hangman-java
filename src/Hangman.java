@@ -5,26 +5,38 @@
 import acm.program.*;
 
 
-public class Hangman extends ConsoleProgram{
+public class Hangman extends ConsoleProgram {
+    public void init() {
+        canvas = new HangmanCanvas();
+        add(canvas);
+    }
+
     public void run() {
+        // getting the word and setting variables
         word = lexicon.getWord();
         String guess = getGuess();
         String lastGuess;
         int count = word.length() + 3;
         println("Welcome to Hangman");
 
+        //getting user input
         while (!word.equalsIgnoreCase(guess.toLowerCase()) && count > 0) {
             println("the word now looks like this: " + guess);
             println("you have " + count + " tries");
             String character = readLine("your guess: ");
+
+            // checking if the user imput is only one letter
             while (character.length() != 1) {
                 println("write only one letter");
                 character = readLine("your guess: ");
             }
+            //checking if the word contains users input
             lastGuess = guess;
             guess = checkCharacter(guess, character);
             if (lastGuess.equalsIgnoreCase(guess)) count--;
         }
+
+        // checking if user wins or not
         if (count == 0) {
             println("you loose the word was " + word.toLowerCase());
         } else {
@@ -33,6 +45,7 @@ public class Hangman extends ConsoleProgram{
 
     }
 
+    //changing word to guess
     private String getGuess() {
         String retWord = "";
         for (int i = 0; i < word.length(); i++) {
@@ -41,6 +54,7 @@ public class Hangman extends ConsoleProgram{
         return retWord;
     }
 
+    // checking character
     private String checkCharacter(String guessedWord, String character) {
         if (guessedWord.contains(character.toLowerCase())) {
             return  guessedWord;
@@ -60,5 +74,6 @@ public class Hangman extends ConsoleProgram{
 
     // instance variables
     private HangmanLexicon lexicon = new HangmanLexicon();
+    private HangmanCanvas canvas;
     private String word;
 }
