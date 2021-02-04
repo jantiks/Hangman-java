@@ -4,16 +4,16 @@
 
 import acm.program.*;
 
-import java.util.Locale;
 
 public class Hangman extends ConsoleProgram{
     public void run() {
         word = lexicon.getWord();
         String guess = getGuess();
+        String lastGuess;
         int count = word.length() + 3;
         println("Welcome to Hangman");
 
-        while (!word.toLowerCase().equals(guess.toLowerCase()) && count > 0) {
+        while (!word.equalsIgnoreCase(guess.toLowerCase()) && count > 0) {
             println("the word now looks like this: " + guess);
             println("you have " + count + " tries");
             String character = readLine("your guess: ");
@@ -21,8 +21,9 @@ public class Hangman extends ConsoleProgram{
                 println("write only one letter");
                 character = readLine("your guess: ");
             }
+            lastGuess = guess;
             guess = checkCharacter(guess, character);
-            count --;
+            if (lastGuess.equalsIgnoreCase(guess)) count--;
         }
         if (count == 0) {
             println("you loose the word was " + word.toLowerCase());
